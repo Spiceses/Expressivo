@@ -3,8 +3,6 @@
  */
 package expressivo;
 
-import java.util.Objects;
-
 /**
  * An immutable data type representing a polynomial expression of:
  *   + and *
@@ -19,7 +17,7 @@ import java.util.Objects;
 public interface Expression {
     
     // Datatype definition
-    //  Expr = Number(n:double) + Variable(name:string) + Plus() + Multiply()
+    //  Expr = Number(n:double) + Variable(name:string) + Plus(left:Expr, right:Expr) + Multiply(left:Expr, right:Expr)
     
     /**
      * Parse an expression.
@@ -56,109 +54,4 @@ public interface Expression {
     
     // TODO more instance methods
     
-}
-
-final class Number implements Expression {
-    private final double value;
-
-    public Number(double value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(value);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Number)) return false;
-        Number that = (Number) obj;
-        return Double.compare(this.value, that.value) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
-}
-
-final class Variable implements Expression {
-    private final String name;
-
-    public Variable(String name) {
-        if (!name.matches("[a-zA-Z]+")) {
-            throw new IllegalArgumentException("变量名必须是非空的字母字符串");
-        }
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Variable)) return false;
-        Variable that = (Variable) obj;
-        return this.name.equals(that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-}
-
-final class Plus implements Expression {
-    private final Expression left, right;
-
-    public Plus(Expression left, Expression right) {
-        this.left = left;
-        this.right = right;
-    }
-
-    @Override
-    public String toString() {
-        return "(" + left.toString() + " + " + right.toString() + ")";
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Plus)) return false;
-        Plus that = (Plus) obj;
-        return this.left.equals(that.left) && this.right.equals(that.right);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(left, right);
-    }
-}
-
-final class Multiply implements Expression {
-    private final Expression left, right;
-
-    public Multiply(Expression left, Expression right) {
-        this.left = left;
-        this.right = right;
-    }
-
-    @Override
-    public String toString() {
-        return "(" + left.toString() + " * " + right.toString() + ")";
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Multiply)) return false;
-        Multiply that = (Multiply) obj;
-        return this.left.equals(that.left) && this.right.equals(that.right);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(left, right);
-    }
 }

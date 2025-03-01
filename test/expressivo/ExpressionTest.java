@@ -13,7 +13,25 @@ import org.junit.Test;
 public class ExpressionTest {
 
     // Testing strategy
-    //   TODO
+    // Number:
+    //  toString, hashCode, equals:
+    //      partition on number: 0, >0
+    //  equals:
+    //      partition on type of obj: class of this, others
+    //      partition on number of obj: 0, >0
+    // Variable:
+    //  toString, hashCode, equals:
+    //      partition on length of variable: 0, 1, >1
+    //  equals:
+    //      partition on type of obj: class of this, others
+    //      partition on length of variable in obj: 0, 1, >1
+    // Plus, Multiply:
+    //  toString, hashCode, equals:
+    //      partition on type of left or right expr: Number, Variable, Plus, Multiply
+    //  equals:
+    //      partition on type of obj: class of this, others
+    //      partition on type of left or right expr in obj: Number, Variable, Plus, Multiply
+
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
