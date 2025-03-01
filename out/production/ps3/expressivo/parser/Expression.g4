@@ -29,9 +29,18 @@ import Configuration;
  * For more information, see reading 18 about parser generators, which explains
  * how to use Antlr and has links to reference information.
  */
-root : sum EOF;
-sum : primitive ('+' primitive)*;
+root : sum EOF;  // 入口规则，整条表达式必须完全匹配
+
+// 加法：低优先级
+sum : product ('+' product)*;
+
+// 乘法：高优先级
+product : primitive ('*' primitive)*;
+
+// 处理数字和括号
 primitive : NUMBER | '(' sum ')';
+
+// 数字定义
 NUMBER : [0-9]+;
 
 /* Tell Antlr to ignore spaces around tokens. */
