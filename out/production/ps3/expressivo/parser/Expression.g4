@@ -38,10 +38,13 @@ sum : product ('+' product)*;
 product : primitive ('*' primitive)*;
 
 // 处理数字和括号
-primitive : NUMBER | '(' sum ')';
+primitive : NUMBER | VARIABLE | '(' sum ')';
 
 // 数字定义
-NUMBER : [0-9]+;
+NUMBER : [0-9]+ ('.' [0-9]+)?;
+
+// 变量定义
+VARIABLE: [a-zA-Z]+;
 
 /* Tell Antlr to ignore spaces around tokens. */
-SPACES : [ ]+ -> skip;
+SPACES: [ ]+ -> skip;

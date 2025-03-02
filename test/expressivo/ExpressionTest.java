@@ -159,6 +159,8 @@ public class ExpressionTest {
     //  partition on number: 0, >0
     //  partition on type of number: integer, decimal
     //  partition on length of variable: 1, >1
+    //      (below is error handling)
+    //  partition on position of space: between items, within terminal
 
 
     // Covers parse:
@@ -179,7 +181,7 @@ public class ExpressionTest {
     //  length of variable: 1, >1
     @Test
     public void testParseVariable() {
-        assertEquals(new Variable("(x)"), Expression.parse("x"));
+        assertEquals(new Variable("x"), Expression.parse("(x)"));
         assertEquals(new Variable("y"), Expression.parse("y"));
         assertEquals(new Variable("xyz"), Expression.parse("xyz"));
     }
