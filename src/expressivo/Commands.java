@@ -24,7 +24,13 @@ public class Commands {
      * @throws IllegalArgumentException if the expression or variable is invalid
      */
     public static String differentiate(String expression, String variable) {
-        throw new RuntimeException("unimplemented");
+        try {
+            Expression expr = Expression.parse(expression); // 解析输入表达式
+            Expression derivative = expr.differentiate(variable); // 计算导数
+            return derivative.toString(); // 返回导数的字符串表示
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid expression or variable: " + e.getMessage());
+        }
     }
     
     /**
