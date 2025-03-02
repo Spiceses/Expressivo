@@ -32,7 +32,6 @@ public class ExpressionTest {
     //      partition on type of obj: class of this, others
     //      partition on type of left or right expr in obj: Number, Variable, Plus, Multiply
     //      partition on number of equivalent expressions: 0, 1(left = left or right = right, left = right) , 2(left = left and right = right)
-
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
@@ -151,5 +150,59 @@ public class ExpressionTest {
         assertEquals(expr1.hashCode(), expr2.hashCode());
         assertNotEquals(expr1.hashCode(), expr3.hashCode());
     }
-    
+
+    // Testing strategy
+    // parse:
+    //  partition on operators: +, *, ()
+    //  partition on num of numbers: 0, 1, >1
+    //  partition on num of variables: 0, 1, >1
+    //  partition on number: 0, >0
+    //  partition on type of number: integer, decimal
+    //  partition on length of variable: 1, >1
+
+
+    // Covers parse:
+    //  num of numbers: 1
+    //  num of variables: 0
+    //  number: 0, >0
+    //  type of number: integer, decimal
+    //  operators: ()
+    @Test
+    public void testParseNumber() {
+        assertEquals(new Number(0), Expression.parse("0"));
+        assertEquals(new Number(3.14), Expression.parse("3.14"));
+    }
+
+    // Covers parse:
+    //  num of numbers: 0
+    //  num of variables: 1
+    //  length of variable: 1, >1
+    @Test
+    public void testParseVariable() {
+        assertEquals(new Variable("(x)"), Expression.parse("x"));
+        assertEquals(new Variable("y"), Expression.parse("y"));
+        assertEquals(new Variable("xyz"), Expression.parse("xyz"));
+    }
+
+    // Covers parser:
+    //  num of numbers: >1
+    //  num of variables: >1
+    //  operators: +, *
+    @Test
+    public void testParseMixedExpressions() {
+        assertEquals(
+                new Plus(new Variable("x"), new Multiply(new Variable("y"), new Variable("z"))),
+                Expression.parse("x + y * z")
+        );
+
+        assertEquals(
+                new Multiply(new Plus(new Variable("x"), new Variable("y")), new Variable("z")),
+                Expression.parse("(x + y) * z")
+        );
+
+        assertEquals(
+                new Multiply(new Plus(new Number(3), new Number(4)), new Plus(new Variable("x"), new Variable("y"))),
+                Expression.parse("(3 + 4) * (x + y)")
+        );
+    }
 }
