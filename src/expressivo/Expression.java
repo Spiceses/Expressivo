@@ -83,7 +83,14 @@ public interface Expression {
     public int hashCode();
     
     // TODO more instance methods
-    
+
+    /**
+     * Differentiate an expression with respect to a variable.
+     * @param var the variable to differentiate by, a case-sensitive nonempty string of letters.
+     * @return expression's derivative with respect to variable.  Must be a valid expression equal
+     *         to the derivative, but doesn't need to be in simplest or canonical form.
+     */
+    public Expression differentiate(String var);
 }
 
 /** Make a IntegerExpresion value from a parse tree. */

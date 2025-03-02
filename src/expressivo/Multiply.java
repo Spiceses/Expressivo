@@ -52,4 +52,9 @@ public final class Multiply implements Expression {
     public int hashCode() {
         return Objects.hash(left, right);
     }
+
+    @Override
+    public Expression differentiate(String var) {
+        return new Plus(new Multiply(left.differentiate(var), right), new Multiply(left, right.differentiate(var)));
+    }
 }

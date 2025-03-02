@@ -52,4 +52,12 @@ public final class Variable implements Expression {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+    @Override
+    public Expression differentiate(String var) {
+        if (Objects.equals(name, var)) {
+            return new Number(1);
+        }
+        return new Number(0);
+    }
 }

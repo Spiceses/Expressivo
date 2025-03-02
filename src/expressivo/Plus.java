@@ -51,4 +51,9 @@ public final class Plus implements Expression {
     public int hashCode() {
         return Objects.hash(left, right);
     }
+
+    @Override
+    public Expression differentiate(String var) {
+        return new Plus(left.differentiate(var), right.differentiate(var));
+    }
 }

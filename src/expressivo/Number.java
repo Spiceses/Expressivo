@@ -50,4 +50,9 @@ public final class Number implements Expression {
     public int hashCode() {
         return Objects.hash(value);
     }
+
+    @Override
+    public Expression differentiate(String var) {
+        return new Number(0);
+    }
 }
