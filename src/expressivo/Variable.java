@@ -2,6 +2,7 @@ package expressivo;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Variable 是 Expression 的一个不可变实现，表示变量（如 "x"、"y"）。
@@ -64,6 +65,14 @@ public final class Variable implements Expression {
 
     @Override
     public Expression simplify(Map<String,Double> environment) {
-        return this;
+        if (environment.containsKey(name)) {
+            return new Number(environment.get(name)); // 变量替换
+        }
+        return this; // 变量未定义，保持不变
+    }
+
+    @Override
+    public Optional<Double> result() {
+        return Optional.empty();
     }
 }

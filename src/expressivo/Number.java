@@ -2,6 +2,7 @@ package expressivo;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Number 是 Expression 的一个不可变实现，表示一个数值常量。
@@ -60,5 +61,10 @@ public final class Number implements Expression {
     @Override
     public Expression simplify(Map<String,Double> environment) {
         return this;
+    }
+
+    @Override
+    public Optional<Double> result() {
+        return Optional.of(value);
     }
 }

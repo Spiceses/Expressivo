@@ -2,6 +2,7 @@ package expressivo;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Multiply 是 Expression 的一个不可变实现，表示两个表达式的乘法运算。
@@ -62,5 +63,15 @@ public final class Multiply implements Expression {
     @Override
     public Expression simplify(Map<String,Double> environment) {
         return this;
+    }
+
+    @Override
+    public Optional<Double> result() {
+        Optional<Double> leftResult = left.result();
+        Optional<Double> rightResult = right.result();
+        if (leftResult.isPresent() && rightResult.isPresent()) {
+            return Optional.of(leftResult.get() * rightResult.get());
+        }
+        return Optional.empty();
     }
 }

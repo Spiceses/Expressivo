@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Stack;
 
 /**
@@ -105,6 +106,12 @@ public interface Expression {
      * @throws IllegalArgumentException if the expression is invalid
      */
     public Expression simplify(Map<String,Double> environment);
+
+    /**
+     * 计算当前表达式的值
+     * @return 表达式的值, 如果有未知变量则为Optional.empty()
+     */
+    public Optional<Double> result();
 }
 
 /** Make a IntegerExpresion value from a parse tree. */
