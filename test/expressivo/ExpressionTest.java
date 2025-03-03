@@ -7,6 +7,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Tests for the Expression abstract data type.
  */
@@ -320,6 +324,8 @@ public class ExpressionTest {
     // simplify:
     //  Number, Variable, Plus, Multiply:
     //      partition on length of env: 0, 1, >1
+    //      partition on string length of env: 1, >1
+    //      partition on double of env: 0, 1, >1
     //  Number:
     //      partition on number of this: 0, 1, >1
     //  Variable:
@@ -329,4 +335,96 @@ public class ExpressionTest {
     //      partition on env and left expr: env contains variable in left expr or not
     //      partition on env and right expr: env contains variable in right expr or not
     //      partition on left or right expr: Number, Variable, Plus, Multiply
+
+    // Covers Number:
+    //      partition on length of env: 0, 1, >1
+    //      partition on string length of env: 1, >1
+    //      partition on double of env: 0, 1, >1
+    //      partition on number of this: 0, 1, >1
+    @Test
+    public void testSimplifyNumber() {
+        Map<String, Double> env0 = Collections.emptyMap();
+        Map<String, Double> env1 = Map.of("x", 1.0);
+        Map<String, Double> env2 = Map.of("x", 2.0, "yyy", 0.0);
+
+        Expression num1 = new Number(0);
+        Expression num2 = new Number(5.5);
+        Expression num3 = new Number(1);
+
+        assertEquals(num1, num1.simplify(env0));
+        assertEquals(num2, num2.simplify(env1));
+        assertEquals(num3, num3.simplify(env2));
+    }
+
+    // Covers Variable:
+    //      partition on length of env: 0, 1, >1
+    //      partition on string length of env: 1, >1
+    //      partition on double of env: 0, 1, >1
+    //      partition on env and this: env contains variable of this or not
+    @Test
+    public void testSimplifyVariable() {
+        Map<String, Double> env0 = Collections.emptyMap();
+        Map<String, Double> env1 = Map.of("x", 1.0);
+        Map<String, Double> env2 = Map.of("xxx", 2.0, "yyy", 0.0);
+
+        Expression varX = new Variable("x");
+        Expression varY = new Variable("yyy");
+
+        assertEquals(varX, varX.simplify(env0));
+        assertEquals(new Number(1), varX.simplify(env1));
+        assertEquals(new Number(0), varY.simplify(env2));
+    }
+
+    // Covers Plus, Multiply:
+    //      partition on length of env: 0, 1, >1
+    //      partition on string length of env: 1, >1
+    //      partition on double of env: 0, 1, >1
+    //      partition on number of variables of this: 0, 1, >1
+    //      partition on env and left expr: env contains variable in left expr or not
+    //      partition on env and right expr: env contains variable in right expr or not
+    //      partition on left or right expr: Number, Variable, Plus, Multiply
+    @Test
+    public void testSimplifyPlusMultiply() {
+        Map<String, Double> env0 = Collections.emptyMap();
+        Map<String, Double> env_x = Map.of("x", 1.0);
+        Map<String, Double> env_y = Map.of("y", 99.0);
+        Map<String, Double> env_xy = Map.of("x", 2.0, "y", 0.0);
+
+        Expression num0 = new Number(0);
+        Expression num1 = new Number(1);
+        Expression num3 = new Number(3);
+        Expression num8 = new Number(8);
+        Expression num9 = new Number(9);
+        Expression num99 = new Number(99);
+        Expression x = new Variable("x");
+        Expression y = new Variable("y");
+
+        Expression plus1 = new Plus(x, num3);
+        Expression plus2 = new Plus(y, x);
+        Expression plus3 = new Plus(num3, num3);
+
+        assertEquals(new Number(4), plus1.simplify(env_x));
+        assertEquals(new Number(2), plus2.simplify(env_xy));
+        assertEquals(plus2, plus2.simplify(env0));
+        assertEquals(new Number(6), plus3.simplify(env_x));
+
+        Expression mul1 = new Multiply(x, num3);
+        Expression mul2 = new Multiply(y, x);
+        Expression mul3 = new Multiply(num3, num3);
+        Expression s_mul2 = new Plus(num99, x);
+
+        assertEquals(num3, mul1.simplify(env_x));
+        assertEquals(s_mul2, mul2.simplify(env_y));
+        assertEquals(num9, mul3.simplify(env0));
+
+        // x+3 + x*3
+        Expression complex1 = new Plus(plus1, mul1);
+        // y*x * (y+x)
+        Expression complex2 = new Multiply(mul2, plus2);
+        // 99*x * (99+x)
+        Expression s_complex2 = new Multiply(new Multiply(num99, x), new Plus(num99, x));
+
+        assertEquals(num8, complex1.simplify(env_x));
+        assertEquals(s_complex2, complex2.simplify(env_y));
+    }
 }
