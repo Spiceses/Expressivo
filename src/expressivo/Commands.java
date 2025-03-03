@@ -46,7 +46,18 @@ public class Commands {
      * @throws IllegalArgumentException if the expression is invalid
      */
     public static String simplify(String expression, Map<String,Double> environment) {
-        throw new RuntimeException("unimplemented");
+        try {
+            // 解析输入表达式
+            Expression expr = Expression.parse(expression);
+
+            // 对表达式进行化简
+            Expression simplifiedExpr = expr.simplify(environment);
+
+            // 返回化简后的表达式字符串
+            return simplifiedExpr.toString();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid expression: " + e.getMessage());
+        }
     }
     
 }
