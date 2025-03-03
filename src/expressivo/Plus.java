@@ -61,7 +61,18 @@ public final class Plus implements Expression {
 
     @Override
     public Expression simplify(Map<String,Double> environment) {
-        return this;
+        Expression leftExpr = left.simplify(environment);
+        Expression rightExpr = right.simplify(environment);
+
+        Optional<Double> leftResult = leftExpr.result();
+        Optional<Double> rightResult = rightExpr.result();
+        // 不含未知变量
+        if (leftResult.isPresent() && rightResult.isPresent()) {
+            return new Number(leftResult.get() + rightResult.get());
+        }
+
+        // 含有未知变量
+        return new Plus(leftExpr, rightExpr);
     }
 
     @Override

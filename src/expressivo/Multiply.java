@@ -62,7 +62,30 @@ public final class Multiply implements Expression {
 
     @Override
     public Expression simplify(Map<String,Double> environment) {
-        return this;
+        Expression leftExpr = left.simplify(environment);
+        Expression rightExpr = right.simplify(environment);
+        Optional<Double> leftResult = leftExpr.result();
+        Optional<Double> rightResult = rightExpr.result();
+
+        // 不含未知变量
+        if (leftResult.isPresent() && rightResult.isPresent()) {
+            return new Number(leftResult.get() * rightResult.get());
+        }
+
+        // 乘0
+        if (leftResult.isPresent()) {
+            if (leftResult.get() == 0) {
+                return new Number(0);
+            }
+        }
+        if (rightResult.isPresent()) {
+            if (rightResult.get() == 0) {
+                return new Number(0);
+            }
+        }
+
+        // 含有未知变量
+        return new Multiply(leftExpr, rightExpr);
     }
 
     @Override
@@ -71,6 +94,16 @@ public final class Multiply implements Expression {
         Optional<Double> rightResult = right.result();
         if (leftResult.isPresent() && rightResult.isPresent()) {
             return Optional.of(leftResult.get() * rightResult.get());
+        }
+        if (leftResult.isPresent()) {
+            if (leftResult.get() == 0) {
+                return leftResult;
+            }
+        }
+        if (rightResult.isPresent()) {
+            if (rightResult.get() == 0) {
+                return rightResult;
+            }
         }
         return Optional.empty();
     }

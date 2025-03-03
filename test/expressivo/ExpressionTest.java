@@ -393,7 +393,7 @@ public class ExpressionTest {
         Expression num0 = new Number(0);
         Expression num1 = new Number(1);
         Expression num3 = new Number(3);
-        Expression num8 = new Number(8);
+        Expression num7 = new Number(7);
         Expression num9 = new Number(9);
         Expression num99 = new Number(99);
         Expression x = new Variable("x");
@@ -411,7 +411,7 @@ public class ExpressionTest {
         Expression mul1 = new Multiply(x, num3);
         Expression mul2 = new Multiply(y, x);
         Expression mul3 = new Multiply(num3, num3);
-        Expression s_mul2 = new Plus(num99, x);
+        Expression s_mul2 = new Multiply(num99, x);
 
         assertEquals(num3, mul1.simplify(env_x));
         assertEquals(s_mul2, mul2.simplify(env_y));
@@ -424,7 +424,7 @@ public class ExpressionTest {
         // 99*x * (99+x)
         Expression s_complex2 = new Multiply(new Multiply(num99, x), new Plus(num99, x));
 
-        assertEquals(num8, complex1.simplify(env_x));
+        assertEquals(num7, complex1.simplify(env_x));
         assertEquals(s_complex2, complex2.simplify(env_y));
     }
 }
