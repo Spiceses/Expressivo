@@ -83,8 +83,12 @@ public interface Expression {
      */
     @Override
     public int hashCode();
-    
-    // TODO more instance methods
+
+    // differentiate: Expression x String -> Expression
+    //  differentiate(Number(value: double), var: String) -> Number(0)
+    //  differentiate(Variable(name: String), var: String) -> name == var ? Number(1), Number(0)
+    //  differentiate(Plus(left: Expression, right: Expression), var: String) -> Plus(differentiate(left, var), differentiate(right, var))
+    //  differentiate(Multiply(left: Expression, right: Expression), var: String) -> Plus(Multiply(differentiate(left, var), right), Multiply(left, differentiate(right, var)))
 
     /**
      * Differentiate an expression with respect to a variable.
@@ -93,6 +97,12 @@ public interface Expression {
      *         to the derivative, but doesn't need to be in simplest or canonical form.
      */
     public Expression differentiate(String var);
+
+    // simplify: Expression x Map<String,Double> -> Expression
+    //  simplify(Number(value: double), environment: Map<String,Double>) -> Number(value)
+    //  simplify(Variable(name: String), environment: Map<String,Double>) -> environment.get(name) == null ? Variable(name), Number(environment.get(name))
+    //  simplify(Plus(left: Expression, right: Expression), environment: Map<String,Double>) -> Plus(left.simplify(environment), right.simplify(environment))
+    //  simplify(Multiply(left: Expression, right: Expression), environment: Map<String,Double>) -> Multiply(left.simplify(environment), right.simplify(environment))
 
     /**
      * Simplify this expression.

@@ -16,6 +16,18 @@ import java.util.Optional;
 public final class Variable implements Expression {
     private final String name;
 
+    // abstraction function:
+    //  AF(value) = A mathematical variable expression whose name is "name"
+    // representation invariant:
+    //  name must be a non-empty string consisting only of English letters (a-z, A-Z)
+
+    /**
+     * Checks the representation invariant.
+     */
+    private void checkRep() {
+        assert name.matches("[a-zA-Z]+") : "Variable name must contain only English letters";
+    }
+
     /**
      * 创建一个变量表达式
      *
@@ -26,6 +38,7 @@ public final class Variable implements Expression {
             throw new IllegalArgumentException("变量名必须是非空的字母字符串");
         }
         this.name = name;
+        checkRep();
     }
 
     /**

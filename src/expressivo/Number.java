@@ -15,7 +15,18 @@ import java.util.Optional;
  */
 public final class Number implements Expression {
     private final double value;
-    //  AF(value)
+
+    // abstraction function:
+    //  AF(value) = a expression representing a real number with a value of "value"
+    // representation invariant:
+    //  value is finite double
+
+    /**
+     * 确保表示不变量成立。
+     */
+    private void checkRep() {
+        assert Double.isFinite(value) : "value 必须是有限数";
+    }
 
     /**
      * 创建一个数值表达式
@@ -24,6 +35,7 @@ public final class Number implements Expression {
      */
     public Number(double value) {
         this.value = value;
+        checkRep();
     }
 
     /**

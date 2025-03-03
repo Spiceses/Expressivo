@@ -15,6 +15,11 @@ import java.util.Optional;
 public final class Multiply implements Expression {
     private final Expression left, right;
 
+    // abstraction function:
+    //  AF(left, right) = A mathematical multiplication expression representing (left * right)
+    // representation invariant:
+    //  left and right must not be null
+
     /**
      * 创建一个乘法表达式
      *
@@ -25,6 +30,15 @@ public final class Multiply implements Expression {
     public Multiply(Expression left, Expression right) {
         this.left = left;
         this.right = right;
+        checkRep();
+    }
+
+    /**
+     * Checks the representation invariant.
+     */
+    private void checkRep() {
+        assert left != null : "Left expression cannot be null";
+        assert right != null : "Right expression cannot be null";
     }
 
     /**
@@ -84,7 +98,7 @@ public final class Multiply implements Expression {
             }
         }
 
-        // 含有未知变量
+        // 包含未知变量
         return new Multiply(leftExpr, rightExpr);
     }
 

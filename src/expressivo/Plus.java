@@ -15,6 +15,11 @@ import java.util.Optional;
 public final class Plus implements Expression {
     private final Expression left, right;
 
+    // Abstraction Function:
+    //  AF(left, right) = A mathematical addition expression representing (left + right)
+    // Representation Invariant:
+    //  left and right must not be null
+
     /**
      * 创建一个加法表达式
      *

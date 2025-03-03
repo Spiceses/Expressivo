@@ -14,6 +14,12 @@ import java.util.Map;
  * Tests for the static methods of Commands.
  */
 public class CommandsTest {
+    @Test(expected=AssertionError.class)
+    public void testAssertionsEnabled() {
+        assert false; // make sure assertions are enabled with VM argument: -ea
+    }
+    
+    // tests for Commands.differentiate() and Commands.simplify()
 
     // Testing strategy
     // differentiate:
@@ -30,14 +36,6 @@ public class CommandsTest {
     //      partition on right expr: contains var or not
     //      partition on left or right expr: Number, Variable, Plus, Multiply
     //      (These tests are very similar to the tests I used for my lower-level differentiation operation)
-    
-    @Test(expected=AssertionError.class)
-    public void testAssertionsEnabled() {
-        assert false; // make sure assertions are enabled with VM argument: -ea
-    }
-    
-    
-    // TODO tests for Commands.differentiate() and Commands.simplify()
 
     // Covers Number:
     //  length of var: 1, >1

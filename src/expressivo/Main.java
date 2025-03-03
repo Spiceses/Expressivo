@@ -19,8 +19,7 @@ import java.util.regex.Pattern;
  * <p>PS3 instructions: you are free to change this user interface class.
  */
 public class Main {
-    
-    
+
     /**
      * Read expression and command inputs from the console and output results.
      * An empty input terminates the program.

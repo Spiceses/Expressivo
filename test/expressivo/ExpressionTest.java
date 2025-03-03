@@ -15,6 +15,10 @@ import java.util.Map;
  * Tests for the Expression abstract data type.
  */
 public class ExpressionTest {
+    @Test(expected=AssertionError.class)
+    public void testAssertionsEnabled() {
+        assert false; // make sure assertions are enabled with VM argument: -ea
+    }
 
     // Testing strategy
     // Number:
@@ -36,11 +40,6 @@ public class ExpressionTest {
     //      partition on type of obj: class of this, others
     //      partition on type of left or right expr in obj: Number, Variable, Plus, Multiply
     //      partition on number of equivalent expressions: 0, 1(left = left or right = right, left = right) , 2(left = left and right = right)
-    
-    @Test(expected=AssertionError.class)
-    public void testAssertionsEnabled() {
-        assert false; // make sure assertions are enabled with VM argument: -ea
-    }
 
     // Covers Number:
     //  toString, hashCode, equals:
