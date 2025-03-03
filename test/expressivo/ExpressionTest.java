@@ -315,4 +315,18 @@ public class ExpressionTest {
         assertEquals(d_complex1, complex1.differentiate("x"));
         assertEquals(d_complex2, complex2.differentiate("x"));
     }
+
+    // Testing strategy
+    // simplify:
+    //  Number, Variable, Plus, Multiply:
+    //      partition on length of env: 0, 1, >1
+    //  Number:
+    //      partition on number of this: 0, 1, >1
+    //  Variable:
+    //      partition on env and this: env contains variable of this or not
+    //  Plus, Multiply:
+    //      partition on number of variables of this: 0, 1, >1
+    //      partition on env and left expr: env contains variable in left expr or not
+    //      partition on env and right expr: env contains variable in right expr or not
+    //      partition on left or right expr: Number, Variable, Plus, Multiply
 }

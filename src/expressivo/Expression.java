@@ -14,6 +14,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -91,6 +92,19 @@ public interface Expression {
      *         to the derivative, but doesn't need to be in simplest or canonical form.
      */
     public Expression differentiate(String var);
+
+    /**
+     * Simplify this expression.
+     * @param environment maps variables to values.  Variables are required to be case-sensitive nonempty
+     *         strings of letters.  The set of variables in environment is allowed to be different than the
+     *         set of variables actually found in expression.  Values must be nonnegative numbers.
+     * @return an expression equal to the input, but after substituting every variable v that appears in both
+     *         the expression and the environment with its value, environment.get(v).  If there are no
+     *         variables left in this expression after substitution, it must be evaluated to a single number.
+     *         Additional simplifications to the expression may be done at the implementor's discretion.
+     * @throws IllegalArgumentException if the expression is invalid
+     */
+    public Expression simplify(Map<String,Double> environment);
 }
 
 /** Make a IntegerExpresion value from a parse tree. */

@@ -1,5 +1,6 @@
 package expressivo;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -56,5 +57,10 @@ public final class Multiply implements Expression {
     @Override
     public Expression differentiate(String var) {
         return new Plus(new Multiply(left.differentiate(var), right), new Multiply(left, right.differentiate(var)));
+    }
+
+    @Override
+    public Expression simplify(Map<String,Double> environment) {
+        return this;
     }
 }

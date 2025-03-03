@@ -1,5 +1,6 @@
 package expressivo;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -59,5 +60,10 @@ public final class Variable implements Expression {
             return new Number(1);
         }
         return new Number(0);
+    }
+
+    @Override
+    public Expression simplify(Map<String,Double> environment) {
+        return this;
     }
 }
